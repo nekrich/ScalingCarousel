@@ -159,9 +159,7 @@ open class ScalingCarouselView: UICollectionView {
     public func deviceRotated() {
         guard let lastCurrentCenterCellIndex = currentCenterCellIndex ?? lastCurrentCenterCellIndex else { return }
         DispatchQueue.main.async {
-            self.reloadData()
             self.scrollToItem(at: lastCurrentCenterCellIndex, at: .centeredHorizontally, animated: false)
-            self.didScroll()
         }
     }
 }
