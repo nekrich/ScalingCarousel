@@ -37,14 +37,12 @@ open class ScalingCarouselView: UICollectionView {
     /// Returns the current center cell of the carousel if it can be calculated
     open var currentCenterCell: UICollectionViewCell? {
         
-        let lowerBound = inset - 20
-        let upperBound = inset + 20
-        
+        var bounds = self.bounds
+        bounds.origin.x += inset - 20
+        bounds.size.width -= inset - 20
         for cell in visibleCells {
             
-            let cellRect = convert(cell.frame, to: nil)
-            
-            if cellRect.origin.x > lowerBound && cellRect.origin.x < upperBound {
+            if bounds.contains(cell.frame) {
                 return cell
             }
             
