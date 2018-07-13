@@ -263,7 +263,12 @@ extension InvisibleScrollDelegate: UIScrollViewDelegate {
         // Also, this is where we scale our cells
         for cell in visibleCells {
             if let infoCardCell = cell as? ScalingCarouselCell {
-                infoCardCell.scale(withCarouselInset: inset)
+                
+                // Calculate our scale values
+                let scaleCalculator = fabs(scrollView.contentOffset.x + inset - cell.frame.origin.x)
+                let percentageScale = 1 - min(scaleCalculator / cell.frame.width, 1.0)
+                
+                infoCardCell.scale(with: percentageScale)
             }
         }
     }

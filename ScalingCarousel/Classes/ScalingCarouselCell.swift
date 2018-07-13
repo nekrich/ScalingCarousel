@@ -56,24 +56,21 @@ open class ScalingCarouselCell: UICollectionViewCell {
     /// Scale the cell when it is scrolled
     ///
     /// - parameter carouselInset: The inset of the related SPBCarousel view
-    open func scale(withCarouselInset carouselInset: CGFloat) {
+    private func scale(withCarouselInset carouselInset: CGFloat) {
+        guard let superview = superview as? UIScrollView else {
+            return
+        }
         
-        // Ensure we have a superView, and mainView
-        guard let superview = superview,
-            let mainView = mainView else { return }
+        let scaleCalculator = fabs(superview.contentOffset.x + carouselInset - frame.origin.x)
+        let percentageScale = 1 - min(scaleCalculator / frame.width, 1.0)
         
-        // Get our absolute origin value
-        let originX = superview.convert(frame, to: superview.superview).origin.x
-        
-        // Calculate our actual origin.x value using our inset
-        let originXActual = originX - carouselInset
-        
-        let width = frame.size.width
-        
-        // Calculate our scale values
-        let scaleCalculator = fabs(width - fabs(originXActual))
-        let percentageScale = (scaleCalculator/width)
-        
+        scale(with: percentageScale)
+    }
+    
+    /// Scale the cell when it is scrolled.
+    ///
+    /// - parameter percentageScale: Current scale percent value.
+    open func scale(with percentageScale: CGFloat) {
         let scaleValue = scaleMinimum
             + (percentageScale/scaleDivisor)
         
@@ -85,8 +82,5 @@ open class ScalingCarouselCell: UICollectionViewCell {
         // Scale our mainView and set it's alpha value
         mainView.transform = affineIdentity.scaledBy(x: scaleValue, y: scaleValue)
         mainView.alpha = alphaValue
-        
-        // ..also..round the corners
-        mainView.layer.cornerRadius = 20
     }
 }
