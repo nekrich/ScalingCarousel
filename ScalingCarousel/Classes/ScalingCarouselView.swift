@@ -143,7 +143,7 @@ open class ScalingCarouselView: UICollectionView {
         carousel.didScroll()
      }
     */
-    public func didScroll() {
+    open func didScroll() {
         scrollViewDidScroll(self)
     }
 
